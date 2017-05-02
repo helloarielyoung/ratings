@@ -27,6 +27,7 @@ def index():
 
     return render_template("homepage.html")
 
+
 @app.route("/users")
 def user_list():
     """Show list of users."""
@@ -34,22 +35,37 @@ def user_list():
     users = User.query.all()
     return render_template("user_list.html", users=users)
 
-@app.route('/register', methods=["GET"]):
+
+@app.route('/register', methods=["GET"])
+def give_form():
     return render_template("register_form.html")
 
-@app.route('/register', methods=["POST"]):
-    def register_process():
-        email= request.form.get("email")
-        password= request.form.get("password")
-        age= request.form.get("age")
-        zipcode= request.form.get("zipcode")
-    return rediredt("/")
+
+@app.route('/register', methods=["POST"])
+def register_process():
+    email = request.form.get("email")
+    password = request.form.get("password")
+    age = request.form.get("age")
+    zipcode = request.form.get("zipcode")
+
+    # check if email exists, and if not add to DB
+    if User.query.filter_by(email=email).first() is not None:
+        return redirect("/")
+    else:
+        user = User(email=email,
+                    password=password,
+                    age=age,
+                    zipcode=zipcode)
+        db.session.add(user)
+        db.session.commit()
+
+    return redirect("/")
 
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension
-    app.debug = True
+    app.debug = False
     app.jinja_env.auto_reload = app.debug  # make sure templates, etc. are not cached in debug mode
 
     connect_to_db(app)
@@ -58,5 +74,4 @@ if __name__ == "__main__":
     DebugToolbarExtension(app)
 
 
-    
     app.run(port=5000, host='0.0.0.0')
