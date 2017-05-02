@@ -54,11 +54,8 @@ def load_movies():
         else:
             released_at = None
 
-        # convert from unicode to latin-1
-        title = title.decode("latin-1")
-
         movie = Movie(movie_id=movie_id,
-                      title=title.rstrip('\(\d*\)'),
+                      title=title[:-7],
                       released_at=released_at,
                       imdb_url=imdb_url)
 
