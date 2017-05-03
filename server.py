@@ -34,17 +34,6 @@ def login():
 
     return render_template("login_form.html")
 
-@app.route('/users/<user_id>')
-def get_user(user_id):
-    """Display user page"""
-
-    user = User.query.get(user_id)
-
-    ratings = user.ratings
-    
-    return render_template('user.html', user=user, ratings=ratings)
-
-
 
 @app.route('/login-completion', methods=["POST"])
 def authenticate_login():
@@ -59,11 +48,16 @@ def authenticate_login():
             session['login'] = user.user_id
             print session
             flash('You were successfully logged in')
-            return redirect(url_for('index'))
+            user_id = user.user_id
+            return redirect('/users/' + str(user_id))
+        else:
+            flash('Bad password or user name')
+            return redirect('/login')
+    # we tried getting rid of what appears to be redundant else
+    # but it did not work if it was valid email and bad password
     else:
         flash('Bad password or user name')
-
-        return redirect(url_for('login'))
+        return redirect('/login')
 
 
 @app.route('/logout')
@@ -75,6 +69,15 @@ def logout():
     flash("You are logged out")
 
     return redirect('/')
+
+
+@app.route('/users/<user_id>')
+def get_user(user_id):
+    """Display user page"""
+
+    user = User.query.get(user_id)
+    
+    return render_template('user.html', user=user)
 
 
 @app.route("/users")
@@ -116,6 +119,23 @@ def register_process():
 
     return redirect("/")
 
+
+@app.route('/movies')
+def movie_list():
+    """List of the movies"""
+
+    movies = Movie.query.all()
+
+    return render_template('movie_list.html', movies=movies)
+
+
+@app.route('/movie/<movie_id>')
+def movie_detail(movie_id):
+
+    # need to look up the movie object and pass that in as "movie"
+    # instead of passing the movie_id
+
+    return render_template('movie.html', movie_id=movie_id)
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the

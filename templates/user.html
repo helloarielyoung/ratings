@@ -8,9 +8,11 @@
         Zipcode: {{ user['zipcode'] }}     
     </p>
 
-        <h2>Movie Raings:</h2>
-        <ul>{% for rating in ratings %}  
-        <li>{{ rating.movie.title }} {{ rating.score }}</li>
-        </ul>
+        <h2>Movie Ratings:</h2>
+        <ul>{% for rating in user.ratings %}  
+        <li>
+          {{ rating.movie.title }} {{ rating.score }}
+        </li>
         {% endfor %}
+        </ul>
 {% endblock %}

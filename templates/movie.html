@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h2>Movie ID {{ movie['movie_id'] }}</h2>
+    <p>
+        IMBD: {{ movie['imdb_url'] }} <br>
+        Title: {{ movie['title'] }} <br>
+        Release Date: {{ movie['released_at'] }}     
+    </p>
+
+        <h2>Movie Ratings:</h2>
+        <ul>{% for rating in movie.ratings %}  
+        <li>
+          {{rating.user_id}} {{ rating.score }}
+        </li>
+        {% endfor %}
+        </ul>
+{% endblock %}
