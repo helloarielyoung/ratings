@@ -34,6 +34,12 @@ def login():
 
     return render_template("login_form.html")
 
+# @app.route('/user/<email>')
+# def get_user(email):
+#     user = User.query.filter_by(email=email).first()
+#     return render_template('user.html', jsonify(user=user))
+
+
 
 @app.route('/login-completion', methods=["POST"])
 def authenticate_login():
