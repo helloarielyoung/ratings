@@ -34,10 +34,15 @@ def login():
 
     return render_template("login_form.html")
 
-# @app.route('/user/<email>')
-# def get_user(email):
-#     user = User.query.filter_by(email=email).first()
-#     return render_template('user.html', jsonify(user=user))
+@app.route('/users/<user_id>')
+def get_user(user_id):
+    """Display user page"""
+
+    user = User.query.get(user_id)
+
+    ratings = user.ratings
+    
+    return render_template('user.html', user=user, ratings=ratings)
 
 
 
