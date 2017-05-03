@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Login Form</h1>
+
+<h2>Login Form</h2>
+<p>
+<form action="/login-completion", method="POST">
+    Email: <input type="text" name="email">
+    Password: <input type="text" name="password">
+    <input type="submit" value="Login">
+</form></p>
+
+{% endblock %}

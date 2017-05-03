@@ -2,6 +2,15 @@
 <html>
 <head>
   <title>Ratings</title>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+  {% endwith %}
 </head>
 
 <body>
@@ -9,6 +18,17 @@
   <hr>
 
   {% block content %} put your content here {% endblock %}
+
+<p>
+  <a href="/login">Login</a><br>
+  <a href="/register">Register</a><br>
+  <a href="/"> Homepage </a>
+</p>
+<p>
+    <form action='/logout'>
+    <input type='submit' value='logout'>
+</form>
+</p>
 
 </body>
 </html>
