@@ -1,17 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <h2>Movie ID {{ movie['movie_id'] }}</h2>
+    <h2>Movie ID {{ movie.movie_id }}</h2>
     <p>
-        IMBD: {{ movie['imdb_url'] }} <br>
-        Title: {{ movie['title'] }} <br>
-        Release Date: {{ movie['released_at'] }}     
+        IMBD: {{ movie.imdb_url }} <br>
+        Title: {{ movie.title }} <br>
+        Release Date: {{ movie.released_at }}     
     </p>
-
+        {% if "login" in session %}
+    <p>
+        <form action="/rating-form">
+        <input type="hidden" name="movie_id" value= {{ movie['movie_id'] }}>
+        <input type="submit"  name="" value="Rate This Movie">
+        </form>
+    </p>
+        {% else %}
+    <p>
+        <form  action="/login">
+            <input type="submit" name="submit" value="Login to Rate">
+        </form>
+    </p>
+        {% endif %}
         <h2>Movie Ratings:</h2>
         <ul>{% for rating in movie.ratings %}  
         <li>
-          {{rating.user_id}} {{ rating.score }}
+          User ID: {{rating.user_id}} Rating: {{ rating.score }}
         </li>
         {% endfor %}
         </ul>

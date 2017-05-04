@@ -6,6 +6,7 @@ from flask import jsonify
 from flask import (Flask, render_template, redirect, request, flash,
                    session, url_for)
 from flask_debugtoolbar import DebugToolbarExtension
+from sqlalchemy import update
 
 from model import User, Rating, Movie, connect_to_db, db
 
@@ -76,7 +77,7 @@ def get_user(user_id):
     """Display user page"""
 
     user = User.query.get(user_id)
-    
+
     return render_template('user.html', user=user)
 
 
@@ -131,11 +132,44 @@ def movie_list():
 
 @app.route('/movie/<movie_id>')
 def movie_detail(movie_id):
+    """Displays movie details"""
 
-    # need to look up the movie object and pass that in as "movie"
-    # instead of passing the movie_id
+    movie = Movie.query.get(movie_id)
 
-    return render_template('movie.html', movie_id=movie_id)
+    return render_template('movie.html', movie=movie)
+
+
+@app.route('/rating-form')
+def rating_form():
+    """Return ratings form for that movie_id"""
+
+    movie_id = request.args.get("movie_id")
+    movie = Movie.query.get(int(movie_id))
+
+    return render_template('rating_form.html', movie=movie)
+
+
+@app.route('/process-rating', methods=["POST"])
+def process_rating():
+    """Save rating to ratings table"""
+    user_id = session['login']
+    movie_id = request.form.get("movie_id")
+    score = request.form.get("score")
+
+    rating = db.session.query(Rating).filter_by(user_id=user_id, movie_id=movie_id).first()
+    if rating:
+        rating.score = score
+
+    else:
+        rating = Rating(user_id=user_id,
+                        movie_id=movie_id,
+                        score=score)
+
+    db.session.add(rating)
+    db.session.commit()
+
+    flash("Score recorded")
+    return redirect('/')
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the

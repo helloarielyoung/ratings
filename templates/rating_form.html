@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Rating Form</h1>
+
+<!-- if movie.rating exists for this user(from session data)
+    then get their rating, display it and make a comment
+    that they have already rated it, do they want to change it? -->
+<h2>Rating  Form for {{ movie.title }}</h2>
+        <p>
+            Input your score for this movie:
+        <form action="/process-rating", method="POST">
+            <input type="hidden" name="movie_id" value={{ movie.movie_id }}>
+            Score: <input type="number" name="score">
+            <input type="submit" name="submit" value= "Submit Score">
+        </form></p>
+
+{% endblock %}
