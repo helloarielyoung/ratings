@@ -7,8 +7,18 @@
         Title: {{ movie.title }} <br>
         Release Date: {{ movie.released_at }}     
     </p>
+    <p>Average rating: {{ '%0.2f'|format(average|float) }}</p>
+        {% if prediction %}
+    <p>We predict you will rate this movie {{ '%0.2f'|format(prediction|float) }}</p>
+        {% endif %}
+        <!-- '%0.2f' % proc_err|float -->
+
         {% if "login" in session %}
     <p>
+        <p>{% if user_rating %}
+            Your previous rating was: {{ user_rating.score }}
+        {% endif %}
+        </p>
         <form action="/rating-form">
         <input type="hidden" name="movie_id" value= {{ movie['movie_id'] }}>
         <input type="submit"  name="" value="Rate This Movie">
