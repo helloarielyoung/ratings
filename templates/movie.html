@@ -10,6 +10,9 @@
     <p>Average rating: {{ '%0.2f'|format(average|float) }}</p>
         {% if prediction %}
     <p>We predict you will rate this movie {{ '%0.2f'|format(prediction|float) }}</p>
+    <p>
+        {{ beratement }}
+    </p>
         {% endif %}
         <!-- '%0.2f' % proc_err|float -->
 
@@ -17,6 +20,9 @@
     <p>
         <p>{% if user_rating %}
             Your previous rating was: {{ user_rating.score }}
+    <p>
+        {{ beratement }}
+    </p>
         {% endif %}
         </p>
         <form action="/rating-form">
@@ -31,6 +37,7 @@
         </form>
     </p>
         {% endif %}
+
         <h2>Movie Ratings:</h2>
         <ul>{% for rating in movie.ratings %}  
         <li>

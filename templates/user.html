@@ -9,7 +9,7 @@
     </p>
 
         <h2>Movie Ratings:</h2>
-        <ul>{% for rating in user.ratings %}  
+        <ul>{% for rating in user.ratings|sort(attribute='movie.title') %}  
         <li>
           <a href="/movie/{{ rating.movie_id }}"> {{ rating.movie.title }} </a>{{ rating.score }}
         </li>
