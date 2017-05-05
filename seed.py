@@ -34,6 +34,15 @@ def load_users():
     # Once we're done, we should commit our work
     db.session.commit()
 
+    # Get the Max user_id in the database
+    result = db.session.query(func.max(User.user_id)).one()
+    max_id = int(result[0])
+
+    #adding our Judgemental Eye
+    eye = User(user_id=max_id+1, email='the-eye@of-judgment.com', password='evil')
+    db.session.add(eye)
+    db.session.commit()
+
 
 def load_movies():
     """Load movies from u.item into database."""
@@ -42,7 +51,6 @@ def load_movies():
     # Delete all rows in table, so if we need to run this a second time,
     # we won't be trying to add duplicate users
     Movie.query.delete()
-
 
     # Read u.user file and insert data
     for row in open("seed_data/u.item"):
@@ -84,6 +92,34 @@ def load_ratings():
     # Once we're done, we should commit our work
     db.session.commit()
 
+    #Add the Judgmental Eye's ratings
+    eye = User.query.filter(User.email == 'the-eye@of-judgment.com').one()
+
+    # Toy Story
+    r = Rating(user_id=eye.user_id, movie_id=1, score=1)
+    db.session.add(r)
+
+    # Robocop 3
+    r = Rating(user_id=eye.user_id, movie_id=1274, score=5)
+    db.session.add(r)
+
+    # Judge Dredd
+    r = Rating(user_id=eye.user_id, movie_id=373, score=5)
+    db.session.add(r)
+
+    # 3 Ninjas
+    r = Rating(user_id=eye.user_id, movie_id=314, score=5)
+    db.session.add(r)
+
+    # Aladdin
+    r = Rating(user_id=eye.user_id, movie_id=95, score=1)
+    db.session.add(r)
+
+    # The Lion King
+    r = Rating(user_id=eye.user_id, movie_id=71, score=1)
+    db.session.add(r)
+
+    db.session.commit()
 
 def set_val_user_id():
     """Set value for the next user_id after seeding database"""
